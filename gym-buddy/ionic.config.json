@@ -1,0 +1,7 @@
+{
+  "name": "gym-buddy",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
