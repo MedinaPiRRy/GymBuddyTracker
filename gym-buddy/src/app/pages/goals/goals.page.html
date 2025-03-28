@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Goals</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form (ngSubmit)="submitGoal()">
+    <ion-item>
+      <ion-label position="floating">Goal Title</ion-label>
+      <ion-input [(ngModel)]="goal.title" name="title" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Target Value (e.g. 225)</ion-label>
+      <ion-input type="number" [(ngModel)]="goal.targetValue" name="targetValue" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Unit</ion-label>
+      <ion-input [(ngModel)]="goal.unit" name="unit" placeholder="lbs / kg / reps"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Deadline</ion-label>
+      <ion-datetime-button datetime="goal-deadline"></ion-datetime-button>
+      <ion-modal trigger="goal-deadline">
+        <ion-datetime
+          id="goal-deadline"
+          presentation="date"
+          [(ngModel)]="goal.deadline"
+          name="deadline"
+        ></ion-datetime>
+      </ion-modal>
+    </ion-item>
+
+    <ion-button expand="block" type="submit">Add Goal</ion-button>
+  </form>
+
+  <ion-list *ngIf="goals.length">
+    <ion-item-divider>
+      <ion-label>My Goals</ion-label>
+    </ion-item-divider>
+
+    <ion-card *ngFor="let g of goals">
+      <ion-card-header>
+        <ion-card-title>{{ g.title }}</ion-card-title>
+        <ion-card-subtitle>
+          {{ g.targetValue }} {{ g.unit }} by {{ g.deadline }}
+        </ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label>Status</ion-label>
+          <ion-checkbox [(ngModel)]="g.isCompleted" (ionChange)="updateGoal(g)" slot="end"></ion-checkbox>
+        </ion-item>
+        <ion-button expand="block" color="danger" (click)="deleteGoal(g._id!)">Delete</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+</ion-content>

@@ -5,6 +5,22 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+  },
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./pages/dashboard/dashboard.module').then( m => m.DashboardPageModule)
+  },
+  {
+    path: 'workout',
+    loadChildren: () => import('./pages/workout/workout.module').then( m => m.WorkoutPageModule)
+  },
+  {
+    path: 'progress',
+    loadChildren: () => import('./pages/progress/progress.module').then( m => m.ProgressPageModule)
+  },
+  {
+    path: 'goals',
+    loadChildren: () => import('./pages/goals/goals.module').then( m => m.GoalsPageModule)
   }
 ];
 @NgModule({

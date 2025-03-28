@@ -18,5 +18,11 @@ db.once('open', () => console.log('MongoDB connected'));
 import workoutRoutes from './routes/workouts.js';
 app.use('/api/workouts', workoutRoutes);
 
+import metricRoutes from './routes/metrics.js';
+app.use('/api/metrics', metricRoutes);
+
+import goalRoutes from './routes/goals.js';
+app.use('/api/goals', goalRoutes);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

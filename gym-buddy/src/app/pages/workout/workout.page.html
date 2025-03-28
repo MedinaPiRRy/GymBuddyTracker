@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Workout Logging</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form (ngSubmit)="submitWorkout()">
+    <ion-item>
+      <ion-label position="floating">Workout Title</ion-label>
+      <ion-input [(ngModel)]="workout.title" name="title" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Date</ion-label>
+      <ion-datetime-button datetime="workout-date"></ion-datetime-button>
+      <ion-modal trigger="workout-date">
+        <ion-datetime
+          id="workout-date"
+          [(ngModel)]="workout.date"
+          name="date"
+          presentation="date"
+        ></ion-datetime>
+      </ion-modal>
+    </ion-item>
+
+    <ion-list>
+      <ion-item-divider>
+        <ion-label>Exercises</ion-label>
+      </ion-item-divider>
+
+      <div *ngFor="let ex of workout.exercises; let i = index">
+        <ion-item>
+          <ion-input
+            placeholder="Exercise Name"
+            [(ngModel)]="ex.name"
+            name="name-{{i}}"
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input type="number" placeholder="Sets" [(ngModel)]="ex.sets" name="sets-{{i}}"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input type="number" placeholder="Reps" [(ngModel)]="ex.reps" name="reps-{{i}}"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input type="number" placeholder="Weight (lbs)" [(ngModel)]="ex.weight" name="weight-{{i}}"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input type="number" placeholder="Rest Time (sec)" [(ngModel)]="ex.restTime" name="rest-{{i}}"></ion-input>
+        </ion-item>
+        <ion-button color="danger" expand="block" (click)="removeExercise(i)">Remove</ion-button>
+        <ion-item-divider></ion-item-divider>
+      </div>
+    </ion-list>
+
+    <ion-button expand="block" (click)="addExercise()">Add Exercise</ion-button>
+    <ion-button expand="block" type="submit" color="primary">Submit Workout</ion-button>
+  </form>
+
+  <ion-list *ngIf="workouts.length">
+    <ion-item-divider>
+      <ion-label>Saved Workouts</ion-label>
+    </ion-item-divider>
+    <ion-item *ngFor="let w of workouts">
+      <ion-label>
+        <h2>{{ w.title }}</h2>
+        <p>{{ w.date }}</p>
+      </ion-label>
+      <ion-button slot="end" color="danger" (click)="deleteWorkout(w._id)">Delete</ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>
