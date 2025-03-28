@@ -1,13 +1,56 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>dashboard</ion-title>
+    <ion-title>Dashboard</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">dashboard</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+
+  <!-- Latest Workout -->
+  <ion-card *ngIf="latestWorkout">
+    <ion-card-header>
+      <ion-card-title>Latest Workout</ion-card-title>
+      <ion-card-subtitle>{{ latestWorkout.title }} - {{ latestWorkout.date }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let ex of latestWorkout.exercises">
+          <ion-label>
+            {{ ex.name }}:
+            {{ ex.sets }}x{{ ex.reps }} at: {{ ex.weight }} lbs
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Latest Body Metric -->
+  <ion-card *ngIf="latestMetric">
+    <ion-card-header>
+      <ion-card-title>Latest Body Metric</ion-card-title>
+      <ion-card-subtitle>{{ latestMetric.date }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Weight:</strong> {{ latestMetric.weight }} kg</p>
+      <p><strong>Height:</strong> {{ latestMetric.height }} cm</p>
+      <p><strong>Dots:</strong> {{ latestMetric.dots | number:'1.1-2' }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Active Goals -->
+  <ion-card *ngIf="activeGoals.length">
+    <ion-card-header>
+      <ion-card-title>Active Goals</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let goal of activeGoals">
+          <ion-label>
+            {{ goal.title }}: {{ goal.targetValue }} {{ goal.unit }} by {{ goal.deadline }}
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>
