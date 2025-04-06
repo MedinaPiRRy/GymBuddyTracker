@@ -1,11 +1,12 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
+// Define the schema for body metrics
 const bodyMetricSchema = new mongoose.Schema({
-  date: String, 
+  date: String,
   weight: Number,
   height: Number,
-  dots: Number 
+  dots: Number,
 });
 
-const BodyMetric = mongoose.model('bodymetrics', bodyMetricSchema);
+const BodyMetric = mongoose.model("bodymetrics", bodyMetricSchema);
 export default BodyMetric;

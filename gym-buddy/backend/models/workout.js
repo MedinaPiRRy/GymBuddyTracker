@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+// Define the schema for workouts
 const workoutSchema = new mongoose.Schema({
   title: String,
   date: String,

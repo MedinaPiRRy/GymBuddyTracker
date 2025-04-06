@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+// Define the schema for goals
 const goalSchema = new mongoose.Schema({
   title: String,
   targetValue: Number,

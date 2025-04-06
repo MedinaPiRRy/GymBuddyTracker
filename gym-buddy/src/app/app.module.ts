@@ -10,7 +10,7 @@ import { AppComponent } from './app.component';
 import { provideHttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
-import { BaseChartDirective  } from 'ng2-charts';
+import { BaseChartDirective  } from 'ng2-charts'; // Added to create line-charts and progress-bars
 
 @NgModule({
   declarations: [AppComponent],

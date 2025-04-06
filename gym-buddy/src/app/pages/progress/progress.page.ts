@@ -1,23 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import {
-    Chart as ChartJS,
-    ChartDataset,
-    CategoryScale,
-    LinearScale,
-    LineController,
-    BarController,
-    PointElement,
-    LineElement,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-    Filler
-  } from 'chart.js';
+  Chart as ChartJS,
+  ChartDataset,
+  CategoryScale,
+  LinearScale,
+  LineController,
+  BarController,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler,
+} from 'chart.js';
 
+// Created interface for body metrics
 interface BodyMetric {
-  _id?: string; // Optional field
+  _id?: string;
   date: string;
   weight: number;
   height: number;
@@ -28,7 +29,7 @@ interface BodyMetric {
   selector: 'app-progress',
   templateUrl: './progress.page.html',
   styleUrls: ['./progress.page.scss'],
-  standalone: false
+  standalone: false,
 })
 export class ProgressPage implements OnInit {
   metric: Partial<BodyMetric> = {
@@ -39,6 +40,7 @@ export class ProgressPage implements OnInit {
 
   metrics: BodyMetric[] = [];
 
+  // Data needed to display charts
   bodyChartData: { labels: string[]; datasets: ChartDataset<'line'>[] } = {
     labels: [],
     datasets: [
@@ -57,19 +59,20 @@ export class ProgressPage implements OnInit {
         backgroundColor: 'rgba(72, 138, 255, 0.2)',
         tension: 0.3,
         fill: true,
-      }
+      },
     ],
   };
-  
+
   chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      y: { beginAtZero: true }
-    }
+      y: { beginAtZero: true },
+    },
   };
 
   constructor(private api: ApiService) {
+    // Registering Chart.js components
     ChartJS.register(
       CategoryScale,
       LinearScale,
@@ -82,18 +85,20 @@ export class ProgressPage implements OnInit {
       Tooltip,
       Filler,
       Legend
-    );    
-   }
-
-  ngOnInit() {
-    this.loadMetrics();
+    );
   }
 
+  ngOnInit() {
+    this.loadMetrics(); // Load metrics on initialization
+  }
+
+  // Method to calculate dots based on weight and height
   calculateDots(weight: number, height: number): number {
     // Placeholder formula: Dots = (weight^2) / height
     return weight && height ? (weight * weight) / height : 0;
   }
 
+  // Method to handle the form submission
   submitMetric() {
     if (!this.metric.date || !this.metric.weight || !this.metric.height) {
       alert('Please fill in all fields');
@@ -120,6 +125,7 @@ export class ProgressPage implements OnInit {
     });
   }
 
+  // Method to handle the form reset
   loadMetrics() {
     this.api.getMetrics().subscribe({
       next: (res) => {
@@ -132,6 +138,7 @@ export class ProgressPage implements OnInit {
     });
   }
 
+  // Method to handle the deletion of a metric
   deleteMetric(id: string) {
     this.api.deleteMetric(id).subscribe({
       next: () => this.loadMetrics(),
@@ -139,17 +146,18 @@ export class ProgressPage implements OnInit {
     });
   }
 
+  // Method to process the body chart data
   processBodyChart() {
     const sorted = [...this.metrics].sort(
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
     );
-  
+
     this.bodyChartData = {
-      labels: sorted.map(m => new Date(m.date).toLocaleDateString()),
+      labels: sorted.map((m) => new Date(m.date).toLocaleDateString()),
       datasets: [
         {
           label: 'Weight (kg)',
-          data: sorted.map(m => m.weight),
+          data: sorted.map((m) => m.weight),
           borderColor: '#ff3c00',
           backgroundColor: 'rgba(255, 60, 0, 0.2)',
           tension: 0.3,
@@ -157,14 +165,13 @@ export class ProgressPage implements OnInit {
         },
         {
           label: 'Dots',
-          data: sorted.map(m => m.dots),
+          data: sorted.map((m) => m.dots),
           borderColor: '#488aff',
           backgroundColor: 'rgba(72, 138, 255, 0.2)',
           tension: 0.3,
           fill: true,
-        }
-      ]
+        },
+      ],
     };
   }
-
 }

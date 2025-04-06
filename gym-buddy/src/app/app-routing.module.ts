@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
+// Created routes for all pages in the app
 const routes: Routes = [
   {
     path: '',

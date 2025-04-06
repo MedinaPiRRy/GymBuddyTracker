@@ -9,12 +9,11 @@ interface Exercise {
   restTime: number;
 }
 
-
 @Component({
   selector: 'app-workout',
   templateUrl: './workout.page.html',
   styleUrls: ['./workout.page.scss'],
-  standalone: false
+  standalone: false,
 })
 export class WorkoutPage implements OnInit {
   workout: {
@@ -29,12 +28,13 @@ export class WorkoutPage implements OnInit {
 
   workouts: any[] = [];
 
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService) {}
 
   ngOnInit() {
-    this.loadWorkouts();
+    this.loadWorkouts(); // Load workouts on initialization
   }
 
+  // Method to handle the form submission
   addExercise() {
     this.workout.exercises.push({
       name: '',
@@ -45,12 +45,18 @@ export class WorkoutPage implements OnInit {
     });
   }
 
+  // Method to handle the removal of an exercise
   removeExercise(index: number) {
     this.workout.exercises.splice(index, 1);
   }
 
+  // Method to handle the form submission
   submitWorkout() {
-    if (!this.workout.title || !this.workout.date || this.workout.exercises.length === 0) {
+    if (
+      !this.workout.title ||
+      !this.workout.date ||
+      this.workout.exercises.length === 0
+    ) {
       alert('Please fill all fields');
       return;
     }
@@ -68,6 +74,7 @@ export class WorkoutPage implements OnInit {
     });
   }
 
+  // Method to load workouts
   loadWorkouts() {
     this.api.getWorkouts().subscribe({
       next: (res) => (this.workouts = res.message),
@@ -75,6 +82,7 @@ export class WorkoutPage implements OnInit {
     });
   }
 
+  // Method to handle the deletion of a workout
   deleteWorkout(id: string) {
     this.api.deleteWorkout(id).subscribe({
       next: () => this.loadWorkouts(),

@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-
+  <!-- Form to Submit Metric to Database -->
   <form (ngSubmit)="submitMetric()">
     <ion-item>
       <ion-label class="section-label">Date</ion-label>
@@ -18,21 +18,33 @@
         prefer-wheel="true"
       ></ion-datetime>
     </ion-item>
-    
 
     <ion-item>
       <ion-label position="floating">Weight (kg)</ion-label>
-      <ion-input type="number" [(ngModel)]="metric.weight" name="weight" required></ion-input>
+      <ion-input
+        type="number"
+        [(ngModel)]="metric.weight"
+        name="weight"
+        required
+      ></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="floating">Height (cm)</ion-label>
-      <ion-input type="number" [(ngModel)]="metric.height" name="height" required></ion-input>
+      <ion-input
+        type="number"
+        [(ngModel)]="metric.height"
+        name="height"
+        required
+      ></ion-input>
     </ion-item>
 
-    <ion-button expand="block" type="submit" color="primary">Add Metric</ion-button>
+    <ion-button expand="block" type="submit" color="primary"
+      >Add Metric</ion-button
+    >
   </form>
 
+  <!-- Body Metric (Chart) -->
   <ion-card>
     <ion-card-header>
       <ion-card-title>Body Metrics Chart</ion-card-title>
@@ -42,12 +54,13 @@
         baseChart
         [data]="bodyChartData"
         [options]="chartOptions"
-        [type]="'line'">
+        [type]="'line'"
+      >
       </canvas>
     </ion-card-content>
   </ion-card>
-  
 
+  <!-- List of Body Metrics -->
   <ion-list *ngIf="metrics.length">
     <ion-item-divider>
       <ion-label>Tracked Metrics</ion-label>
@@ -61,9 +74,10 @@
         <p><strong>Weight:</strong> {{ m.weight }} kg</p>
         <p><strong>Height:</strong> {{ m.height }} cm</p>
         <p><strong>Dots:</strong> {{ m.dots | number:'1.1-2' }}</p>
-        <ion-button color="danger" (click)="m._id && deleteMetric(m._id)">Delete</ion-button>
+        <ion-button color="danger" (click)="m._id && deleteMetric(m._id)"
+          >Delete</ion-button
+        >
       </ion-card-content>
     </ion-card>
   </ion-list>
-
 </ion-content>
