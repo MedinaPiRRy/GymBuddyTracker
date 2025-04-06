@@ -33,6 +33,21 @@
     <ion-button expand="block" type="submit" color="primary">Add Metric</ion-button>
   </form>
 
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Body Metrics Chart</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <canvas
+        baseChart
+        [data]="bodyChartData"
+        [options]="chartOptions"
+        [type]="'line'">
+      </canvas>
+    </ion-card-content>
+  </ion-card>
+  
+
   <ion-list *ngIf="metrics.length">
     <ion-item-divider>
       <ion-label>Tracked Metrics</ion-label>

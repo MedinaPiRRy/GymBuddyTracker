@@ -21,8 +21,38 @@
           </ion-label>
         </ion-item>
       </ion-list>
+
+      <ion-card-subtitle>Total Weight Lifted</ion-card-subtitle>
+      <ng-container *ngIf="weightChartData?.datasets?.[0]?.data?.length; else noData">
+        <canvas baseChart
+          [data]="weightChartData"
+          [options]="chartOptions"
+          [type]="'line'"
+          height="300">
+        </canvas>
+      </ng-container>
+      
+      <ng-template #noData>
+        <p class="no-data-msg">No workout data available yet.</p>
+      </ng-template>      
     </ion-card-content>
   </ion-card>
+
+  <!-- Workout Consistency Chart -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Workout Consistency</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <canvas
+        baseChart
+        [data]="consistencyChartData"
+        [options]="chartOptions"
+        [type]="'bar'">
+      </canvas>
+    </ion-card-content>
+  </ion-card>  
+
 
   <!-- Latest Body Metric -->
   <ion-card *ngIf="latestMetric">
@@ -34,6 +64,14 @@
       <p><strong>Weight:</strong> {{ latestMetric.weight }} kg</p>
       <p><strong>Height:</strong> {{ latestMetric.height }} cm</p>
       <p><strong>Dots:</strong> {{ latestMetric.dots | number:'1.1-2' }}</p>
+
+      <ion-card-subtitle>Weight Progress</ion-card-subtitle>
+        <canvas
+        baseChart
+        [data]="bodyChartData"
+        [options]="chartOptions"
+        [type]="'line'">
+      </canvas>
     </ion-card-content>
   </ion-card>
 
@@ -44,13 +82,28 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <ion-item *ngFor="let goal of activeGoals">
-          <ion-label>
-            {{ goal.title }}: {{ goal.targetValue }} {{ goal.unit }} by {{ goal?.deadline | date: 'MMM d, yyyy' }}
-          </ion-label>
-        </ion-item>
+        <ng-container *ngFor="let goal of activeGoals">
+          <ion-item lines="none">
+            <ion-label class="ion-text-wrap">
+              <strong>{{ goal.title }}</strong><br />
+              Target: {{ goal.targetValue }} {{ goal.unit }}<br />
+              Deadline: {{ goal.deadline | date: 'MMM d, yyyy' }}
+            </ion-label>
+          </ion-item>
+  
+          <div class="goal-progress-wrapper">
+            <ion-progress-bar
+              [value]="getGoalProgress(goal)"
+              color="success"
+              class="goal-progress-bar"
+            ></ion-progress-bar>
+            <p class="progress-percent">
+              {{ getGoalProgress(goal) * 100 | number: '1.0-0' }}%
+            </p>
+          </div>
+        </ng-container>
       </ion-list>
     </ion-card-content>
-  </ion-card>
+  </ion-card>  
 
 </ion-content>

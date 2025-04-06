@@ -146,6 +146,25 @@ ion-content {
     border-radius: 12px;
     margin-bottom: 10px;
   }
+
+  .goal-progress-wrapper {
+    margin: 0 16px 16px;
+    padding: 0 4px;
+  }
+  
+  .goal-progress-bar {
+    height: 10px;
+    border-radius: 10px;
+    --background: #333;
+    --progress-background: #32db64;
+  }
+  
+  .progress-percent {
+    font-size: 0.75rem;
+    color: #aaa;
+    margin-top: 4px;
+    text-align: right;
+  }  
   
   /* Responsive tweaks */
   @media (min-width: 768px) {

@@ -1,5 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
+import {
+    Chart as ChartJS,
+    ChartDataset,
+    CategoryScale,
+    LinearScale,
+    LineController,
+    BarController,
+    PointElement,
+    LineElement,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+    Filler
+  } from 'chart.js';
 
 interface BodyMetric {
   _id?: string; // Optional field
@@ -24,7 +39,51 @@ export class ProgressPage implements OnInit {
 
   metrics: BodyMetric[] = [];
 
-  constructor(private api: ApiService) { }
+  bodyChartData: { labels: string[]; datasets: ChartDataset<'line'>[] } = {
+    labels: [],
+    datasets: [
+      {
+        label: 'Weight (kg)',
+        data: [],
+        borderColor: '#ff3c00',
+        backgroundColor: 'rgba(255, 60, 0, 0.2)',
+        tension: 0.3,
+        fill: true,
+      },
+      {
+        label: 'Dots',
+        data: [],
+        borderColor: '#488aff',
+        backgroundColor: 'rgba(72, 138, 255, 0.2)',
+        tension: 0.3,
+        fill: true,
+      }
+    ],
+  };
+  
+  chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: { beginAtZero: true }
+    }
+  };
+
+  constructor(private api: ApiService) {
+    ChartJS.register(
+      CategoryScale,
+      LinearScale,
+      LineController,
+      BarController,
+      PointElement,
+      LineElement,
+      BarElement,
+      Title,
+      Tooltip,
+      Filler,
+      Legend
+    );    
+   }
 
   ngOnInit() {
     this.loadMetrics();
@@ -65,6 +124,7 @@ export class ProgressPage implements OnInit {
     this.api.getMetrics().subscribe({
       next: (res) => {
         this.metrics = res.message;
+        this.processBodyChart();
       },
       error: (err) => {
         console.error(err);
@@ -77,6 +137,34 @@ export class ProgressPage implements OnInit {
       next: () => this.loadMetrics(),
       error: (err) => console.error(err),
     });
+  }
+
+  processBodyChart() {
+    const sorted = [...this.metrics].sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+  
+    this.bodyChartData = {
+      labels: sorted.map(m => new Date(m.date).toLocaleDateString()),
+      datasets: [
+        {
+          label: 'Weight (kg)',
+          data: sorted.map(m => m.weight),
+          borderColor: '#ff3c00',
+          backgroundColor: 'rgba(255, 60, 0, 0.2)',
+          tension: 0.3,
+          fill: true,
+        },
+        {
+          label: 'Dots',
+          data: sorted.map(m => m.dots),
+          borderColor: '#488aff',
+          backgroundColor: 'rgba(72, 138, 255, 0.2)',
+          tension: 0.3,
+          fill: true,
+        }
+      ]
+    };
   }
 
 }

@@ -5,6 +5,7 @@ interface Goal {
   _id?: string;
   title: string;
   targetValue: number;
+  currentValue?: number;
   unit: string;
   deadline: string;
   isCompleted: boolean;
@@ -85,4 +86,21 @@ export class GoalsPage implements OnInit {
       error: (err) => console.error(err),
     });
   }
+
+  updateGoalProgress(goal: Goal) {
+    this.api.updateGoal({
+      _id: goal._id,
+      fields: { currentValue: goal.currentValue },
+    }).subscribe({
+      next: () => this.loadGoals(),
+      error: (err) => console.error(err),
+    });
+  }
+
+  getGoalProgress(goal: Goal): number {
+    return goal.currentValue && goal.targetValue
+      ? Math.min(goal.currentValue / goal.targetValue, 1)
+      : 0;
+  }
+  
 }
