@@ -7,14 +7,17 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./dashboard.page.scss'],
   standalone: false
 })
-export class DashboardPage implements OnInit {
+export class DashboardPage {
   latestWorkout: any = null;
   latestMetric: any = null;
   activeGoals: any[] = [];
 
   constructor(private api: ApiService) { }
 
-  ngOnInit() {
+  // Lifecycle hook that is called when the component is about to be displayed
+  // This is where we can load data that needs to be displayed in the view
+  // This is better thatn ngOnInit() because it is called every time the view is about to be displayed, so all data is always up to date
+  ionViewWillEnter() {
     this.loadLatestWorkout();
     this.loadLatestMetric();
     this.loadActiveGoals();
