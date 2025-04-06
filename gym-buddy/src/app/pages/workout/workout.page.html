@@ -12,17 +12,17 @@
     </ion-item>
 
     <ion-item>
-      <ion-label position="floating">Date</ion-label>
-      <ion-datetime-button datetime="workout-date"></ion-datetime-button>
-      <ion-modal trigger="workout-date">
-        <ion-datetime
-          id="workout-date"
-          [(ngModel)]="workout.date"
-          name="date"
-          presentation="date"
-        ></ion-datetime>
-      </ion-modal>
+      <ion-label class="section-label">Date</ion-label>
+      <ion-datetime
+        display-format="MMM d, yyyy"
+        presentation="date"
+        [(ngModel)]="workout.date"
+        name="date"
+        locale="en-US"
+        prefer-wheel="true"
+      ></ion-datetime>
     </ion-item>
+    
 
     <ion-list>
       <ion-item-divider>
@@ -65,7 +65,7 @@
     <ion-item *ngFor="let w of workouts">
       <ion-label>
         <h2>{{ w.title }}</h2>
-        <p>{{ w.date }}</p>
+        <p>{{ w?.date | date: 'medium' }}</p>
       </ion-label>
       <ion-button slot="end" color="danger" (click)="deleteWorkout(w._id)">Delete</ion-button>
     </ion-item>

@@ -35,3 +35,122 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+
+/* Custom Global Styles */
+
+ion-content {
+    --background: #111;
+    color: #fff;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  ion-toolbar {
+    --background: #1e1e1e;
+    --color: #fefefe;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+  
+  ion-title {
+    text-align: center;
+    color: #ff3c00;
+  }
+  
+  ion-item {
+    --background: #1c1c1c;
+    --border-color: #333;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    padding: 8px;
+  }
+  
+  ion-input,
+  ion-datetime {
+    color: #f0f0f0;
+  }
+  
+  ion-label {
+    color: #aaa;
+    font-weight: 500;
+  }
+
+  .section-label {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #ff9900;
+    margin: 12px 8px 4px;
+  }
+  
+  /* Buttons */
+  ion-button {
+    margin-top: 12px;
+    font-weight: bold;
+    --border-radius: 10px;
+    --background: linear-gradient(135deg, #ff3c00, #ff7a00);
+    --color: white;
+  }
+  
+  ion-button[color="danger"] {
+    --background: #ff4d4d;
+    --color: #fff;
+  }
+  
+  /* Cards */
+  ion-card {
+    background: #1a1a1a;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    margin-bottom: 16px;
+    padding: 8px;
+  }
+  
+  ion-card-title {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  ion-card-subtitle {
+    color: #ff9900;
+    font-size: 0.9rem;
+  }
+  
+  ion-card-content p {
+    margin: 4px 0;
+    color: #ccc;
+    font-size: 0.95rem;
+  }
+  
+  /* Checkbox Row Alignment */
+  ion-item ion-checkbox {
+    --background: #292929;
+    --border-color: #666;
+  }
+  
+  /* Divider */
+  ion-item-divider {
+    background: #222;
+    color: #ff9900;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+  }
+  
+  /* Exercise block styling */
+  ion-list > div {
+    background: #181818;
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+  }
+  
+  /* Responsive tweaks */
+  @media (min-width: 768px) {
+    ion-content {
+      padding: 20px 40px;
+    }
+  }
+  

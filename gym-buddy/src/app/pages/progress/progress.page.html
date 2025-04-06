@@ -8,17 +8,17 @@
 
   <form (ngSubmit)="submitMetric()">
     <ion-item>
-      <ion-label position="floating">Date</ion-label>
-      <ion-datetime-button datetime="metric-date"></ion-datetime-button>
-      <ion-modal trigger="metric-date">
-        <ion-datetime
-          id="metric-date"
-          [(ngModel)]="metric.date"
-          name="date"
-          presentation="date"
-        ></ion-datetime>
-      </ion-modal>
+      <ion-label class="section-label">Date</ion-label>
+      <ion-datetime
+        display-format="MMM d, yyyy"
+        presentation="date"
+        [(ngModel)]="metric.date"
+        name="date"
+        locale="en-US"
+        prefer-wheel="true"
+      ></ion-datetime>
     </ion-item>
+    
 
     <ion-item>
       <ion-label position="floating">Weight (kg)</ion-label>
@@ -40,7 +40,7 @@
 
     <ion-card *ngFor="let m of metrics">
       <ion-card-header>
-        <ion-card-title>{{ m.date }}</ion-card-title>
+        <ion-card-title>{{ m?.date | date: 'MMM d, yyyy' }}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <p><strong>Weight:</strong> {{ m.weight }} kg</p>

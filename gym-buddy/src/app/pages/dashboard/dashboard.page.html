@@ -10,7 +10,7 @@
   <ion-card *ngIf="latestWorkout">
     <ion-card-header>
       <ion-card-title>Latest Workout</ion-card-title>
-      <ion-card-subtitle>{{ latestWorkout.title }} - {{ latestWorkout.date }}</ion-card-subtitle>
+      <ion-card-subtitle>{{ latestWorkout.title }} - {{ latestWorkout.date | date: 'medium' }}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       <ion-list>
@@ -28,7 +28,7 @@
   <ion-card *ngIf="latestMetric">
     <ion-card-header>
       <ion-card-title>Latest Body Metric</ion-card-title>
-      <ion-card-subtitle>{{ latestMetric.date }}</ion-card-subtitle>
+      <ion-card-subtitle>{{ latestMetric?.date | date: 'MMM d, yyyy' }}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       <p><strong>Weight:</strong> {{ latestMetric.weight }} kg</p>
@@ -46,7 +46,7 @@
       <ion-list>
         <ion-item *ngFor="let goal of activeGoals">
           <ion-label>
-            {{ goal.title }}: {{ goal.targetValue }} {{ goal.unit }} by {{ goal.deadline }}
+            {{ goal.title }}: {{ goal.targetValue }} {{ goal.unit }} by {{ goal?.deadline | date: 'MMM d, yyyy' }}
           </ion-label>
         </ion-item>
       </ion-list>
