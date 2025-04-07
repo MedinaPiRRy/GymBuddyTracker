@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
+import { ToastController } from '@ionic/angular';
 
 interface Exercise {
   name: string;
-  sets: number;
-  reps: number;
-  weight: number;
-  restTime: number;
+  sets?: number;
+  reps?: number;
+  weight?: number;
+  restTime?: number;
 }
 
 @Component({
@@ -28,7 +29,7 @@ export class WorkoutPage implements OnInit {
 
   workouts: any[] = [];
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, private toastController: ToastController) {}
 
   ngOnInit() {
     this.loadWorkouts(); // Load workouts on initialization
@@ -38,10 +39,10 @@ export class WorkoutPage implements OnInit {
   addExercise() {
     this.workout.exercises.push({
       name: '',
-      sets: 0,
-      reps: 0,
-      weight: 0,
-      restTime: 0,
+      sets: undefined,
+      reps: undefined,
+      weight: undefined,
+      restTime: undefined,
     });
   }
 
@@ -57,19 +58,19 @@ export class WorkoutPage implements OnInit {
       !this.workout.date ||
       this.workout.exercises.length === 0
     ) {
-      alert('Please fill all fields');
+      this.presentToast('!!!Please Fill Out All Necessary Fields!!!', 'danger');
       return;
     }
 
     this.api.addWorkout(this.workout).subscribe({
       next: () => {
-        alert('Workout logged!');
+        this.presentToast('Workout Added Successfully!');
         this.workout = { title: '', date: '', exercises: [] };
         this.loadWorkouts();
       },
       error: (err) => {
         console.error(err);
-        alert('Failed to add workout');
+        this.presentToast('Error Adding Workout', 'danger');
       },
     });
   }
@@ -85,8 +86,19 @@ export class WorkoutPage implements OnInit {
   // Method to handle the deletion of a workout
   deleteWorkout(id: string) {
     this.api.deleteWorkout(id).subscribe({
-      next: () => this.loadWorkouts(),
-      error: (err) => console.error(err),
+      next: () => {this.loadWorkouts(); this.presentToast('Workout Deleted Successfully!');},
+      error: (err) => {console.error(err); this.presentToast('Failed to delete workout', 'danger');},
     });
   }
+
+  // Method to present a toast message
+  async presentToast(message: string, color: 'success' | 'danger' = 'success') {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+      position: 'top',
+      color,
+    });
+    await toast.present();
+  }  
 }

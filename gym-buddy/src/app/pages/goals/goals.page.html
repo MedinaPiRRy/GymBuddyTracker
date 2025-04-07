@@ -34,11 +34,12 @@
 
     <ion-item>
       <ion-label position="floating">Unit</ion-label>
-      <ion-input
-        [(ngModel)]="goal.unit"
-        name="unit"
-        placeholder="lbs / kg / reps"
-      ></ion-input>
+      <ion-select [(ngModel)]="goal.unit" name="unit" required>
+        <ion-select-option value="kg">kg</ion-select-option>
+        <ion-select-option value="lbs">lbs</ion-select-option>
+        <ion-select-option value="reps">reps</ion-select-option>
+        <ion-select-option value="sets">sets</ion-select-option>
+      </ion-select>
     </ion-item>
 
     <ion-item>
@@ -66,8 +67,7 @@
       <ion-card-header>
         <ion-card-title>{{ g.title }}</ion-card-title>
         <ion-card-subtitle>
-          {{ g.targetValue }} {{ g.unit }} by {{ g?.deadline | date: 'MMM d,
-          yyyy' }}
+          {{ g.targetValue }} {{ g.unit }} by {{ g?.deadline | date: 'MMM d, yyyy' }}
         </ion-card-subtitle>
       </ion-card-header>
       <ion-card-content>
@@ -80,7 +80,7 @@
           ></ion-checkbox>
         </ion-item>
         <ion-item>
-          <ion-label>Current</ion-label>
+          <ion-label position="floating">Current</ion-label>
           <ion-input
             type="number"
             [(ngModel)]="g.currentValue"

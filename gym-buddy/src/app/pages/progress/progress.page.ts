@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
+import { ToastController } from '@ionic/angular';
 import {
   Chart as ChartJS,
   ChartDataset,
@@ -71,7 +72,7 @@ export class ProgressPage implements OnInit {
     },
   };
 
-  constructor(private api: ApiService) {
+  constructor(private api: ApiService, private toastController: ToastController) {
     // Registering Chart.js components
     ChartJS.register(
       CategoryScale,
@@ -101,7 +102,7 @@ export class ProgressPage implements OnInit {
   // Method to handle the form submission
   submitMetric() {
     if (!this.metric.date || !this.metric.weight || !this.metric.height) {
-      alert('Please fill in all fields');
+      this.presentToast('!!!Please Fill Out All Necessary Fields!!!', 'danger');
       return;
     }
 
@@ -114,13 +115,13 @@ export class ProgressPage implements OnInit {
 
     this.api.addMetric(data).subscribe({
       next: () => {
-        alert('Metric added');
+        this.presentToast('Metric Added Successfully!');
         this.metric = { date: '', weight: 0, height: 0 };
         this.loadMetrics();
       },
       error: (err) => {
         console.error(err);
-        alert('Failed to add metric');
+        this.presentToast('Failed to add metric', 'danger');
       },
     });
   }
@@ -141,8 +142,8 @@ export class ProgressPage implements OnInit {
   // Method to handle the deletion of a metric
   deleteMetric(id: string) {
     this.api.deleteMetric(id).subscribe({
-      next: () => this.loadMetrics(),
-      error: (err) => console.error(err),
+      next: () => {this.loadMetrics(); this.presentToast('Metric Deleted Successfully!');},
+      error: (err) => {console.error(err); this.presentToast('Failed to delete metric', 'danger');},
     });
   }
 
@@ -174,4 +175,16 @@ export class ProgressPage implements OnInit {
       ],
     };
   }
+
+  // Method to present a toast message
+  async presentToast(message: string, color: 'success' | 'danger' = 'success') {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+      position: 'top',
+      color,
+    });
+    await toast.present();
+  }
+  
 }

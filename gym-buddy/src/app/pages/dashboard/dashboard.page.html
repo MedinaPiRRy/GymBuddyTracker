@@ -44,6 +44,48 @@
     </ion-card-content>
   </ion-card>
 
+  <!-- Show All Workouts Modal -->
+  <ion-card>
+    <ion-card-content>
+      <ion-button id="open-workouts-modal" expand="block"
+        >Show All Latest Workouts</ion-button
+      >
+
+      <ion-modal #modal trigger="open-workouts-modal" expand="block">
+        <ng-template>
+          <ion-content>
+            <ion-toolbar>
+              <ion-title>Workout History</ion-title>
+              <ion-buttons slot="end">
+                <ion-button color="light" (click)="modal.dismiss()"
+                  >Close</ion-button
+                >
+              </ion-buttons>
+            </ion-toolbar>
+
+            <ion-card class="ion-no-margin">
+              <ion-card-content>
+                <ion-list>
+                  <ng-container *ngFor="let workout of workouts">
+                    <ion-item
+                      lines="none"
+                      (click)="openWorkoutDetails(workout)"
+                    >
+                      <ion-label class="ion-text-wrap">
+                        <strong>{{ workout.title }}</strong><br />
+                        {{ workout.date | date: 'MMM d, yyyy' }}
+                      </ion-label>
+                    </ion-item>
+                  </ng-container>
+                </ion-list>
+              </ion-card-content>
+            </ion-card>
+          </ion-content> </ng-template
+        >>
+      </ion-modal>
+    </ion-card-content>
+  </ion-card>
+
   <!-- Workout Consistency Chart -->
   <ion-card>
     <ion-card-header>
@@ -84,6 +126,44 @@
     </ion-card-content>
   </ion-card>
 
+  <!-- Show All Body Metrics Modal -->
+  <ion-card>
+    <ion-card-content>
+      <!-- Button -->
+      <ion-button id="trigger-bodymetrics-modal" expand="block"
+        >Show All Body Metrics</ion-button
+      >
+
+      <!-- Modal -->
+      <ion-modal trigger="trigger-bodymetrics-modal">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>BodyMetrics History</ion-title>
+              <ion-buttons slot="end">
+                <ion-button color="light" (click)="closeModal()"
+                  >Close</ion-button
+                >
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content>
+            <ion-list>
+              <ion-item *ngFor="let metric of bodyMetrics">
+                <ion-label class="ion-text-wrap">
+                  <strong>{{ metric.date | date: 'MMM d, yyyy' }}</strong><br />
+                  Weight: {{ metric.weight }} kg<br />
+                  Height: {{ metric.height }} cm<br />
+                  Dots: {{ metric.dots | number:'1.1-2' }}
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+    </ion-card-content>
+  </ion-card>
+
   <!-- Active Goals -->
   <ion-card *ngIf="activeGoals.length">
     <ion-card-header>
@@ -112,6 +192,44 @@
           </div>
         </ng-container>
       </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Show All Goals Modal -->
+  <ion-card>
+    <ion-card-content>
+      <!-- Button -->
+      <ion-button id="trigger-goals-modal" expand="block"
+        >Show All Goals</ion-button
+      >
+
+      <!-- Modal -->
+      <ion-modal trigger="trigger-goals-modal">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>Goals History</ion-title>
+              <ion-buttons slot="end">
+                <ion-button color="light" (click)="closeModal()"
+                  >Close</ion-button
+                >
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content>
+            <ion-list>
+              <ion-item *ngFor="let goal of goals">
+                <ion-label>
+                  <strong>{{ goal.title }}</strong><br />
+                  {{ goal.targetValue }} {{ goal.unit }}<br />
+                  {{ goal.deadline | date: 'MMM d, yyyy' }} <br />
+                  {{ goal.isCompleted ? 'Completed' : 'In Progress' }}
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
     </ion-card-content>
   </ion-card>
 </ion-content>

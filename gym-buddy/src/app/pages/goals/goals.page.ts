@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
+import { ToastController } from '@ionic/angular';
 
 interface Goal {
   _id?: string;
@@ -21,6 +22,7 @@ export class GoalsPage implements OnInit {
   goal: Partial<Goal> = {
     title: '',
     targetValue: 0,
+    currentValue: 0,
     unit: '',
     deadline: '',
     isCompleted: false,
@@ -28,7 +30,7 @@ export class GoalsPage implements OnInit {
 
   goals: Goal[] = [];
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, private toastController: ToastController) {}
 
   ngOnInit() {
     this.loadGoals();
@@ -37,7 +39,7 @@ export class GoalsPage implements OnInit {
   // Method to handle the form submission
   submitGoal() {
     if (!this.goal.title || !this.goal.targetValue || !this.goal.deadline) {
-      alert('Fill in required fields');
+      this.presentToast('!!!Please Fill Out All Necessary Fields!!!', 'danger');;
       return;
     }
 
@@ -45,6 +47,7 @@ export class GoalsPage implements OnInit {
       title: this.goal.title!,
       targetValue: this.goal.targetValue!,
       unit: this.goal.unit || '',
+      currentValue: this.goal.currentValue || 0,
       deadline: this.goal.deadline!,
       isCompleted: false,
     };
@@ -54,10 +57,12 @@ export class GoalsPage implements OnInit {
         this.goal = {
           title: '',
           targetValue: 0,
+          currentValue: 0,
           unit: '',
           deadline: '',
           isCompleted: false,
         };
+        this.presentToast('Goal Added Successfully!');
         this.loadGoals();
       },
       error: (err) => console.error(err),
@@ -75,8 +80,8 @@ export class GoalsPage implements OnInit {
   // Method to handle the deletion of a goal
   deleteGoal(id: string) {
     this.api.deleteGoal(id).subscribe({
-      next: () => this.loadGoals(),
-      error: (err) => console.error(err),
+      next: () => {this.loadGoals(); this.presentToast('Goal Deleted Successfully!');},
+      error: (err) => {console.error(err); this.presentToast('Failed to delete goal', 'danger');},
     });
   }
 
@@ -88,8 +93,8 @@ export class GoalsPage implements OnInit {
         fields: { isCompleted: goal.isCompleted },
       })
       .subscribe({
-        next: () => this.loadGoals(),
-        error: (err) => console.error(err),
+        next: () => {this.loadGoals(); this.presentToast('Goal Updated Successfully!');},
+        error: (err) => {console.error(err); this.presentToast('Failed to update goal', 'danger');},
       });
   }
 
@@ -111,5 +116,16 @@ export class GoalsPage implements OnInit {
     return goal.currentValue && goal.targetValue
       ? Math.min(goal.currentValue / goal.targetValue, 1)
       : 0;
+  }
+
+  // Method to handle the display of a toast message
+  async presentToast(message: string, color: 'success' | 'danger' = 'success') {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+      position: 'top',
+      color,
+    });
+    await toast.present();
   }
 }

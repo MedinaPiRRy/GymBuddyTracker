@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
+import { ModalController } from '@ionic/angular';
 import {
   Chart as ChartJS,
   ChartDataset,
@@ -28,6 +29,7 @@ export class DashboardPage {
   bodyMetrics: any[] = [];
   latestMetric: any = null;
   activeGoals: any[] = [];
+  goals: any[] = [];
 
   // Data needed to display charts
   weightChartLabels: string[] = [];
@@ -89,7 +91,7 @@ export class DashboardPage {
     },
   };
 
-  constructor(private api: ApiService) {
+  constructor(private api: ApiService, private modalCtrl: ModalController) {
     // Registering Chart.js components to use in the charts
     ChartJS.register(
       CategoryScale,
@@ -113,6 +115,7 @@ export class DashboardPage {
     this.loadLatestWorkout();
     this.loadLatestMetric();
     this.loadActiveGoals();
+    this.loadAllGoals();
   }
 
   // Function to calculate the dots based on weight and height
@@ -272,10 +275,40 @@ export class DashboardPage {
     });
   }
 
+  // Function to load all goals from the API
+  loadAllGoals() {
+    this.api.getGoals().subscribe({
+      next: (res) => {
+        this.goals = res.message;
+      },
+      error: (err) => console.error(err),
+    });
+  }
+  
   // Function to delete a goal based on its ID
   getGoalProgress(goal: any): number {
     return goal.currentValue && goal.targetValue
       ? Math.min(goal.currentValue / goal.targetValue, 1)
       : 0;
+  }
+
+  // Function to open workout details
+  openWorkoutDetails(workout: any) {
+    console.log('Workout Details:', workout);
+  }
+
+  // Function to open goal details
+  openBodyMetricDetails(metric: any) {
+    console.log('Body Metric Details:', metric);
+  }
+
+  // Function to open goal details
+  openGoalDetails(goal: any) {
+    console.log('Goal Details:', goal);
+  }
+
+  // Function to open a modal for adding a new goal
+  async closeModal() {
+    await this.modalCtrl.dismiss();
   }
 }
